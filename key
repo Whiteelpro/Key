@@ -21,4 +21,4 @@ local response = KeySystem:Init({
 })
 
 if not response or not KeyValid then return end
-loadstring(game.HttpGet(game,'https://raw.githubusercontent.com/Whiteelpro/Key/refs/heads/main/blox'))()
+loadstring(game.HttpGet(game,'https://raw.githubusercontent.com/Whiteelpro/Key/refs/heads/main/blox?token=GHSAT0AAAAAAC4ATDUVONMETOLMCSNZW4XCZ3BH7WA'))()
