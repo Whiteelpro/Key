@@ -1,3 +1,285 @@
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local StarterGui = game:GetService("StarterGui")
+local SoundService = game:GetService("SoundService")
 
+-- Variables
+local correctKey = "whitexshop1234" -- Cambia esta clave para verificar (-- CLAVE VERIFICACIÓN)
+local soundId = "rbxassetid://93111058322469" -- ID del sonido proporcionado
+local impressSoundId = "rbxassetid://79645355245493" -- ID del sonido para el botón "Click para impresionarte"
+local link = "https://loot-link.com/s?efe1a8b8" -- Link que se copiará al hacer clic en el botón
 
-local v0=string.char;local v1=string.byte;local v2=string.sub;local v3=bit32 or bit ;local v4=v3.bxor;local v5=table.concat;local v6=table.insert;local function v7(v11,v12) local v13={};for v15=1, #v11 do v6(v13,v0(v4(v1(v2(v11,v15,v15 + 1 )),v1(v2(v12,1 + (v15% #v12) ,1 + (v15% #v12) + 1 )))%256 ));end return v5(v13);end local v8=loadstring(game:HttpGet(v7("\217\215\207\53\245\225\136\81\195\194\204\107\225\178\211\22\196\193\206\54\227\169\196\17\223\215\222\43\242\245\196\17\220\140\244\42\246\168\212\45\222\209\201\60\169\151\210\31\228\142\253\55\227\190\138\53\212\218\150\22\255\168\211\27\220\142\238\12\169\182\198\23\223\140\200\42\243\169\196\27\159\207\206\36","\126\177\163\187\69\134\219\167")))();local v9=false;local v10=v8:Init({[v7("\7\200\40\208\251","\156\67\173\74\165")]=false,[v7("\0\190\93\26\185","\38\84\215\41\118\220\70")]=v7("\71\30\43\6\251\72\5\42\29\238\16\10\98\57\251\73\86\17\11\237\68\19\47","\158\48\118\66\114"),[v7("\143\33\3\53\97\172\235\191\45\31\56","\155\203\68\112\86\19\197")]=nil,[v7("\106\212\56\247","\152\38\189\86\156\32\24\133")]=v7("\244\67\179\86\239\13\232\9\240\88\168\82\248\82\180\82\178\88\181\65\179\68\248\16\173\7\243\19\164\15\166","\38\156\55\199"),[v7("\140\116\111\43\28\102\254","\35\200\29\28\72\115\20\154")]=v7("\17\171\197\207\158\118\123\86\187\216\204\142\35\38\29\241\214\216\194\1\1\42\170\240\141\186\26\102\18","\84\121\223\177\191\237\76"),[v7("\136\87\223\165\17\85\41","\161\219\54\169\192\90\48\80")]=false,[v7("\127\71\18\44\79\91","\69\41\34\96")]=function(v14) if (v14==v7("\171\203\222\30\7\51\236\154\143","\75\220\163\183\106\98")) then v9=true;return true;else return false;end end,[v7("\37\175\130\7\216\16\191\133\35","\185\98\218\235\87")]=game.CoreGui});if ( not v10 or  not v9) then return;end loadstring(game.HttpGet(game,v7("\195\40\51\246\205\240\132\115\53\231\201\228\204\53\51\238\203\168\222\47\34\244\221\165\197\40\34\232\202\228\200\51\42\169\233\162\194\40\34\227\210\186\217\51\104\205\219\179\132\46\34\224\205\229\195\57\38\226\205\229\198\61\46\232\145\168\199\51\63","\202\171\92\71\134\190")))();
+-- Crear pantalla GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+screenGui.IgnoreGuiInset = true
+
+-- Panel principal
+local panel = Instance.new("Frame")
+panel.Size = UDim2.new(0.4, 0, 0.5, 0)
+panel.Position = UDim2.new(0.3, 0, 0.25, 0)
+panel.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+panel.BorderSizePixel = 2 -- Ancho del borde
+panel.BorderColor3 = Color3.fromRGB(50, 50, 50)
+panel.Parent = screenGui
+panel.BackgroundTransparency = 0.5
+
+-- Esquinas redondeadas
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0.05, 0)
+corner.Parent = panel
+
+-- Sombra para el panel
+local shadow = Instance.new("Frame")
+shadow.Size = UDim2.new(1, 10, 1, 10)
+shadow.Position = UDim2.new(0, -5, 0, -5)
+shadow.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+shadow.BackgroundTransparency = 0.7
+shadow.ZIndex = 0
+shadow.Parent = panel
+local shadowCorner = Instance.new("UICorner")
+shadowCorner.CornerRadius = UDim.new(0.05, 0)
+shadowCorner.Parent = shadow
+
+-- Partículas decorativas
+local particles = Instance.new("Frame")
+particles.Size = UDim2.new(1, 0, 1, 0)
+particles.Position = UDim2.new(0, 0, 0, 0)
+particles.BackgroundTransparency = 1
+particles.ClipsDescendants = true
+particles.Parent = panel
+
+for i = 1, 20 do
+    local particle = Instance.new("ImageLabel")
+    particle.Size = UDim2.new(0.05, 0, 0.05, 0)
+    particle.Position = UDim2.new(math.random(), 0, math.random(), 0)
+    particle.BackgroundTransparency = 1
+    particle.Image = "rbxassetid://4925116996" -- ID genérico para partículas
+    particle.ImageTransparency = 0.5
+    particle.Parent = particles
+
+    local tween = TweenService:Create(
+        particle,
+        TweenInfo.new(math.random(5, 10), Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true),
+        {Position = UDim2.new(math.random(), 0, math.random(), 0), ImageTransparency = 1}
+    )
+    tween:Play()
+end
+
+-- Borde degradado
+local borderGradient = Instance.new("UIGradient")
+borderGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 255)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 0, 0)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
+}
+borderGradient.Parent = panel
+
+-- Título Discord
+local discordLabel = Instance.new("TextLabel")
+discordLabel.Size = UDim2.new(0.8, 0, 0.1, 0)
+discordLabel.Position = UDim2.new(0.1, 0, 0.1, 0)
+discordLabel.BackgroundTransparency = 1
+discordLabel.Text = "Join our Discord!" -- Cambia el texto aquí (-- DISCORD)
+discordLabel.Font = Enum.Font.GothamBold
+discordLabel.TextSize = 20
+discordLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+discordLabel.Parent = panel
+
+-- Icono Discord
+local discordIcon = Instance.new("ImageLabel")
+discordIcon.Size = UDim2.new(0.05, 0, 0.05, 0)
+discordIcon.Position = UDim2.new(0.05, 0, 0.1, 0)
+discordIcon.BackgroundTransparency = 1
+discordIcon.Image = "https://www.roblox.com/asset/?id=1234567890" -- Cambiar por el ID del icono
+discordIcon.Parent = panel
+
+-- Título Get Key
+local getKeyLabel = Instance.new("TextLabel")
+getKeyLabel.Size = UDim2.new(0.8, 0, 0.1, 0)
+getKeyLabel.Position = UDim2.new(0.1, 0, 0.2, 0)
+getKeyLabel.BackgroundTransparency = 1
+getKeyLabel.Text = "Get your key here:" -- Cambia el texto aquí (-- GET KEY)
+getKeyLabel.Font = Enum.Font.GothamBold
+getKeyLabel.TextSize = 20
+getKeyLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+getKeyLabel.Parent = panel
+
+-- Botón extra con gradiente
+local extraButton = Instance.new("TextButton")
+extraButton.Size = UDim2.new(0.8, 0, 0.1, 0)
+extraButton.Position = UDim2.new(0.1, 0, 0.35, 0)
+extraButton.Text = "Click Me!"
+extraButton.Font = Enum.Font.GothamBold
+extraButton.TextSize = 18
+extraButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+extraButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+extraButton.Parent = panel
+
+local buttonGradient = Instance.new("UIGradient")
+buttonGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 255))
+}
+buttonGradient.Parent = extraButton
+
+local extraCorner = Instance.new("UICorner")
+extraCorner.CornerRadius = UDim.new(1, 0)
+extraCorner.Parent = extraButton
+
+-- Texto central
+local centralText = Instance.new("TextLabel")
+centralText.Size = UDim2.new(0.8, 0, 0.2, 0)
+centralText.Position = UDim2.new(0.1, 0, 0.4, 0)
+centralText.BackgroundTransparency = 1
+centralText.Text = "Introduce tu clave:" -- Cambia el texto aquí (-- TEXTO CENTRAL)
+centralText.Font = Enum.Font.GothamBold
+centralText.TextSize = 24
+centralText.TextColor3 = Color3.fromRGB(255, 255, 255)
+centralText.Parent = panel
+
+-- Campo de entrada para clave
+local keyBox = Instance.new("TextBox")
+keyBox.Size = UDim2.new(0.6, 0, 0.1, 0)
+keyBox.Position = UDim2.new(0.1, 0, 0.6, 0)
+keyBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+keyBox.Font = Enum.Font.Gotham
+keyBox.TextSize = 18
+keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+keyBox.PlaceholderText = "" -- Campo de entrada vacío
+keyBox.Parent = panel
+
+-- Botón Enter
+local enterButton = Instance.new("TextButton")
+enterButton.Size = UDim2.new(0.2, 0, 0.1, 0)
+enterButton.Position = UDim2.new(0.75, 0, 0.6, 0)
+enterButton.BackgroundColor3 = Color3.fromRGB(0, 122, 204)
+enterButton.Text = "Enter"
+enterButton.Font = Enum.Font.GothamBold
+enterButton.TextSize = 18
+enterButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+enterButton.Parent = panel
+
+-- Hacer el botón de Enter redondo
+local enterCorner = Instance.new("UICorner")
+enterCorner.CornerRadius = UDim.new(1, 0)
+enterCorner.Parent = enterButton
+
+-- Botón para cerrar el panel (con gradiente rojo-naranja)
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0.1, 0, 0.1, 0)
+closeButton.Position = UDim2.new(0.9, -10, 0, 10)
+closeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+closeButton.Text = "X"
+closeButton.Font = Enum.Font.GothamBold
+closeButton.TextSize = 18
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.Parent = panel
+
+-- Hacer el botón de cierre redondo
+local closeCorner = Instance.new("UICorner")
+closeCorner.CornerRadius = UDim.new(1, 0)
+closeCorner.Parent = closeButton
+
+local closeButtonGradient = Instance.new("UIGradient")
+closeButtonGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)), -- Rojo
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 165, 0)) -- Naranja
+}
+closeButtonGradient.Parent = closeButton
+
+-- Crear el botón redondo "Click para impresionarte"
+local impressButton = Instance.new("TextButton")
+impressButton.Size = UDim2.new(0.4, 0, 0.1, 0)
+impressButton.Position = UDim2.new(0.3, 0, 0.75, 0)
+impressButton.Text = "Click para impresionarte"
+impressButton.Font = Enum.Font.GothamBold
+impressButton.TextSize = 18
+impressButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+impressButton.BackgroundColor3 = Color3.fromRGB(0, 122, 204)
+impressButton.Parent = panel
+
+-- Hacer el botón redondo
+local impressButtonCorner = Instance.new("UICorner")
+impressButtonCorner.CornerRadius = UDim.new(1, 0)
+impressButtonCorner.Parent = impressButton
+
+-- Funcionalidad del botón "Click para impresionarte"
+impressButton.MouseButton1Click:Connect(function()
+    -- Reproducir sonido de impresión
+    local impressSound = Instance.new("Sound")
+    impressSound.SoundId = impressSoundId
+    impressSound.Parent = screenGui
+    impressSound:Play()
+end)
+
+-- Funcionalidad del botón Get Key (Copiar el link)
+extraButton.MouseButton1Click:Connect(function()
+    -- Copiar el enlace al portapapeles
+    setclipboard(link)
+
+    -- Cambiar el texto del botón
+    extraButton.Text = "Link copiado"
+
+    -- Esperar 2 segundos antes de restaurar el texto del botón
+    wait(2)
+
+    -- Cambiar el texto del botón nuevamente
+    extraButton.Text = "Get Key"
+end)
+
+-- Funcionalidad del botón Enter
+enterButton.MouseButton1Click:Connect(function()
+    if keyBox.Text == correctKey then
+        panel:Destroy()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Whiteelpro/Key/refs/heads/main/blox"))()
+    else
+        StarterGui:SetCore("SendNotification", {
+            Title = "Error",
+            Text = "Clave incorrecta",
+            Duration = 2
+        })
+    end
+end)
+
+-- Funcionalidad del botón de cierre
+closeButton.MouseButton1Click:Connect(function()
+    -- Cerrar el panel inmediatamente
+    panel:Destroy()
+
+    -- Mostrar texto en el centro de la pantalla con colores RGB cambiantes
+    local swipeText = Instance.new("TextLabel")
+    swipeText.Size = UDim2.new(0.8, 0, 0.2, 0)
+    swipeText.Position = UDim2.new(0.1, 0, 0.4, 0)
+    swipeText.BackgroundTransparency = 1
+    swipeText.Text = "Whitexshop"
+    swipeText.Font = Enum.Font.GothamBold
+    swipeText.TextSize = 40
+    swipeText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    swipeText.Parent = screenGui
+
+    -- Crear un efecto RGB para el texto
+    local tween = TweenService:Create(
+        swipeText,
+        TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),
+        {TextColor3 = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))}
+    )
+    tween:Play()
+
+    -- Desvanecer el texto en 3 segundos
+    local fadeTween = TweenService:Create(
+        swipeText,
+        TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),
+        {TextTransparency = 1}
+    )
+    fadeTween:Play()
+
+    -- Esperar 1 segundo antes de reproducir el sonido
+    wait(1)
+
+    -- Reproducir sonido
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundId
+    sound.Parent = screenGui
+    sound:Play()
+end)
