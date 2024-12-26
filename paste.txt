@@ -1,0 +1,93 @@
+getgenv().stuff = {
+    ["blocks"] = 0;
+    ["spins"] = 0;
+    ["pets"] = 0;
+    ["tier"] = 0;
+    ["rain"] = false;
+}
+
+local cell = loadstring(game:HttpGet("https://raw.githubusercontent.com/Whiteelpro/Key/refs/heads/main/Merge%20for%20DIAMONDS.txt"))()
+local window = cell:Window(game.PlaceId, "v1.0.1")
+local main = window:NewTab("Main","10709818534",true)
+local r = game:GetService("ReplicatedStorage").Remotes
+
+main:Label("Inputs")
+main:Input({
+    Name = "amount of blocks";
+    Clear = false;
+    Callback = function(value)
+        getgenv().stuff.blocks = tonumber(value)
+    end
+})
+main:Input({
+    Name = "amount of spins";
+    Clear = false;
+    Callback = function(value)
+        getgenv().stuff.spins = tonumber(value)
+    end
+})
+main:Input({
+    Name = "amount of pets (op)";
+    Clear = false;
+    Callback = function(value)
+        getgenv().stuff.pets = tonumber(value)
+    end
+})
+main:Input({
+    Name = "block spawn tier";
+    Clear = false;
+    Callback = function(value)
+        getgenv().stuff.tier = tonumber(value)
+    end
+})
+main:Info("Putting block tier to high may break your game")
+main:Label("Buttons")
+
+main:Button({
+    Name = "infinite gems";
+    Callback = function()
+        r.GemEvent:FireServer(math.huge)
+    end
+})
+main:Button({
+    Name = "infinite cash";
+    Callback = function()
+        r.AddRewardEvent:FireServer("Cash",math.huge)
+    end
+})
+main:Button({
+    Name = "give spins";
+    Callback = function()
+        r.AddRewardEvent:FireServer("Spins",getgenv().stuff.spins)
+    end
+})
+main:Button({
+    Name = "give pets";
+    Callback = function()
+        for i=1,getgenv().stuff.pets do
+            r.SpinWheelPrizeEvent:FireServer(4)
+        end
+    end
+})
+main:Button({
+    Name = "block rain (once)";
+    Callback = function()
+        r.AddRewardEvent:FireServer("Blocks",getgenv().stuff.blocks)
+    end 
+})
+main:Button({
+    Name = "upgrade spawn tier";
+    Callback = function()
+       r.UpgradeEvent:FireServer("SpawnTierLevel",getgenv().stuff.tier,0)
+    end 
+})
+main:Label("Switches")
+main:Switch(({
+    Name = "block rain (loop)";
+    Enabled = false;
+    Callback = function(bool)
+        while getgenv().stuff.rain do wait()
+            r.AddRewardEvent:FireServer("Blocks",getgenv().stuff.blocks)
+        end
+    end
+}))
